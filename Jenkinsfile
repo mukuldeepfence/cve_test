@@ -1,6 +1,6 @@
 node {
     def app
-    def full_image_name = 'deepfenceio/jenkins:latest'
+    def full_image_name = 'deepfenceio/jenkins-example:latest'
     def deepfence_key = "0f8ef5d7-3532-4d9d-a3bc-245bf2380b20" // If authentication is enabled in management console, set deepfence key here
     def deepfence_mgmt_console_ip = '147.182.185.164' // IP address of Deepfence management console
     def fail_cve_count = 100 // Fail jenkins build if number of vulnerabilities found is >= this number. Set -1 to pass regardless of vulnerabilities.
