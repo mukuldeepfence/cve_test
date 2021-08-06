@@ -17,7 +17,7 @@ node {
     stage('Run Deepfence Vulnerability Mapper'){
         DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:mask_cve")
         try {
-            c = DeepfenceAgent.run("-it --net=host --privileged=true --cpus='0.3' -v /var/run/docker.sock:/var/run/docker.sock:rw", "-mgmt-console-ip='${deepfence_mgmt_console_ip}' -image-name='${full_image_name}' -deepfence-key='${deepfence_key}' -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -scan-type='base,java,python,ruby,php,nodejs,js,dotnet'")
+            c = DeepfenceAgent.run("-it --net=host --privileged=true --cpus='0.3' -v /var/run/docker.sock:/var/run/docker.sock:rw", "-mgmt-console-ip='${deepfence_mgmt_console_ip}' -image-name='${full_image_name}' -deepfence-key='${deepfence_key}' -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -scan-type='base,java,python,ruby,php,nodejs,js,dotnet' -mask-cve-ids='Path Traversal in package_data,CVE-2019-9169'")
             sh "docker logs -f ${c.id}"
             def out = sh script: "docker inspect ${c.id} --format='{{.State.ExitCode}}'", returnStdout: true
             sh "exit ${out}"
