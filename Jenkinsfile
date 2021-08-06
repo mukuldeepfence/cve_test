@@ -11,11 +11,11 @@ node {
     }
 
     stage('Build image') {
-        app = docker.build("${full_image_name}", "-f jenkins/Dockerfile .")
+        app = docker.build("${full_image_name}", "-f Dockerfile .")
     }
 
     stage('Run Deepfence Vulnerability Mapper'){
-        DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:gm-rc-4")
+        DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:mask_cve")
         try {
             c = DeepfenceAgent.run("-it --net=host --privileged=true --cpus='0.3' -v /var/run/docker.sock:/var/run/docker.sock:rw", "-mgmt-console-ip='${deepfence_mgmt_console_ip}' -image-name='${full_image_name}' -deepfence-key='${deepfence_key}' -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -scan-type='base,java,python,ruby,php,nodejs,js,dotnet'")
             sh "docker logs -f ${c.id}"
