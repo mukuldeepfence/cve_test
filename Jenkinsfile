@@ -4,7 +4,11 @@ node {
     def deepfence_key = "0f8ef5d7-3532-4d9d-a3bc-245bf2380b20" // If authentication is enabled in management console, set deepfence key here
     def deepfence_mgmt_console_ip = '68.183.101.12' // IP address of Deepfence management console
     def fail_cve_count = 100 // Fail jenkins build if number of vulnerabilities found is >= this number. Set -1 to pass regardless of vulnerabilities.
+<<<<<<< HEAD
     def fail_cve_score = 8 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
+=======
+    def fail_cve_score = -1 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
+>>>>>>> parent of 1586f0f (Update Jenkinsfile)
 
     stage('Clone repository') {
         checkout scm
