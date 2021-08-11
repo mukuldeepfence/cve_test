@@ -1,11 +1,11 @@
 node {
     def app
-    def full_image_name = 'deepfenceio/jenkins-example:latest'
+    def full_image_name = 'deepfenceio/jenkins:latest'
     def deepfence_key = "0f8ef5d7-3532-4d9d-a3bc-245bf2380b20" // If authentication is enabled in management console, set deepfence key here
     def deepfence_mgmt_console_ip = '147.182.185.164' // IP address of Deepfence management console
     def fail_cve_count = 100 // Fail jenkins build if number of vulnerabilities found is >= this number. Set -1 to pass regardless of vulnerabilities.
     def fail_cve_score = 8 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
-    def mask_cve_ids = "Path Traversal in package_data,CVE-2019-9169"
+    def mask_cve_ids = "CVE-2018-20225,CVE-2011-3374"
 
     stage('Clone repository') {
         checkout scm
