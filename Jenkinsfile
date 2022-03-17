@@ -1,27 +1,23 @@
 node {
     def app
-    def full_image_name = 'deepfenceio/jenkins-example:sujith'
-    def deepfence_key = "0f8ef5d7-3532-4d9d-a3bc-245bf2380b20" // If authentication is enabled in management console, set deepfence key here
-    def deepfence_mgmt_console_ip = '68.183.101.12' // IP address of Deepfence management console
+    def full_image_name = 'deepfenceio/jenkins-example:latest'
+    def deepfence_mgmt_console_url = '127.0.0.1:443' // URL address of Deepfence management console
     def fail_cve_count = 100 // Fail jenkins build if number of vulnerabilities found is >= this number. Set -1 to pass regardless of vulnerabilities.
-<<<<<<< HEAD
     def fail_cve_score = 8 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
-=======
-    def fail_cve_score = -1 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
->>>>>>> parent of 1586f0f (Update Jenkinsfile)
+    def mask_cve_ids = "" // Comma separated. Example: "CVE-2019-9168,CVE-2019-9169"
 
     stage('Clone repository') {
         checkout scm
     }
 
     stage('Build image') {
-        app = docker.build("${full_image_name}", "-f Dockerfile .")
+        app = docker.build("${full_image_name}", "-f ci-cd-integrations/jenkins/Dockerfile .")
     }
 
     stage('Run Deepfence Vulnerability Mapper'){
-        DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:mask_cve")
+        DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper_ce:latest")
         try {
-            c = DeepfenceAgent.run("-it --net=host --privileged=true --cpus='0.3' -v /var/run/docker.sock:/var/run/docker.sock:rw", "-mgmt-console-ip='${deepfence_mgmt_console_ip}' -image-name='${full_image_name}' -deepfence-key='${deepfence_key}' -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -scan-type='base,java,python,ruby,php,nodejs,js,dotnet'")
+            c = DeepfenceAgent.run("-it --net=host -v /var/run/docker.sock:/var/run/docker.sock", "-mgmt-console-url=${deepfence_mgmt_console_url} -image-name=${full_image_name} -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -mask-cve-ids='${mask_cve_ids}'")
             sh "docker logs -f ${c.id}"
             def out = sh script: "docker inspect ${c.id} --format='{{.State.ExitCode}}'", returnStdout: true
             sh "exit ${out}"
