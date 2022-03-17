@@ -1,9 +1,9 @@
 node {
     def app
     def full_image_name = 'deepfenceio/jenkins-example:latest'
-    def deepfence_mgmt_console_url = '127.0.0.1:443' // URL address of Deepfence management console
+    def deepfence_mgmt_console_url = '137.184.52.247:443' // URL address of Deepfence management console
     def fail_cve_count = 100 // Fail jenkins build if number of vulnerabilities found is >= this number. Set -1 to pass regardless of vulnerabilities.
-    def fail_cve_score = 8 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
+    def fail_cve_score = 140 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
     def mask_cve_ids = "" // Comma separated. Example: "CVE-2019-9168,CVE-2019-9169"
 
     stage('Clone repository') {
