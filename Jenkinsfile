@@ -15,9 +15,9 @@ node {
     }
 
     stage('Run Deepfence Vulnerability Mapper'){
-        DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper_ce:1.2.0")
+        DeepfenceAgent = docker.image("deepfenceio/deepfence_package_scanner_ce:1.3.0")
         try {
-            c = DeepfenceAgent.run("-it --net=host -v /var/run/docker.sock:/var/run/docker.sock", "-mgmt-console-url=${deepfence_mgmt_console_url} -image-name=${full_image_name} -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -mask-cve-ids='${mask_cve_ids}'")
+            c = DeepfenceAgent.run("-it --net=host -v /var/run/docker.sock:/var/run/docker.sock", "-deepfence-key='0817b37f-eea1-4fdb-9c93-4863b22c2e0a' -vulnerability-scan=true -output=table -mode=local -mgmt-console-url=${deepfence_mgmt_console_url} -source=${full_image_name} -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -mask-cve-ids='${mask_cve_ids}'")
             sh "docker logs -f ${c.id}"
             def out = sh script: "docker inspect ${c.id} --format='{{.State.ExitCode}}'", returnStdout: true
             sh "exit ${out}"
