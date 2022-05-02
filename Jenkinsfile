@@ -9,6 +9,10 @@ node {
     stage('Clone repository') {
         checkout scm
     }
+    
+    stage('which user is in use') {
+        sh "whoami"
+    }
 
     stage('Build image') {
         app = docker.build("${full_image_name}", "-f Dockerfile .")
