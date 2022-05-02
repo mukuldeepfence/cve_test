@@ -12,6 +12,8 @@ node {
     
     stage('which user is in use') {
         sh "whoami"
+        sh "cat /etc/group"
+        sh "ls -lah /var/run/docker.sock"
     }
 
     // stage('Build image') {
