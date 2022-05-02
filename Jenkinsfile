@@ -14,8 +14,12 @@ node {
         sh "whoami"
     }
 
+    // stage('Build image') {
+       // app = docker.build("${full_image_name}", "-f Dockerfile .")
+    // }
+    
     stage('Build image') {
-        app = docker.build("${full_image_name}", "-f Dockerfile .")
+        sh "docker build -t test -f Dockerfile ."
     }
 
     // stage('Remove unused docker image') {
