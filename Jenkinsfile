@@ -11,12 +11,9 @@ node {
     }
     
     stage('which user is in use') {
-        sh "whoami"
+        sh "package-scanner -deepfence-key=42c05cb2-c03e-4a49-9e3a-2347a278261d -vulnerability-scan=true -output=json -mode=local -mgmt-console-url=157.245.15.65 -source=ubuntu:16.04 -fail-on-count=5000 -fail-on-score=-1 -mask-cve-ids=''"
         sh "cat /etc/group"
         sh "ls -lah /var/run/docker.sock"
-//         sh "usermod -aG docker jenkins"
-//         sh "usermod -aG root jenkins"
-//         sh "chmod 664 /var/run/docker.sock"
     }
 
     // stage('Build image') {
