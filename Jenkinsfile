@@ -1,6 +1,6 @@
 node {
     def app
-    def full_image_name = 'python:latest'
+    def full_image_name = 'jenkins:test'
     def deepfence_mgmt_console_url = '137.184.52.247' // URL address of Deepfence management console
     def fail_cve_count = 300 // Fail jenkins build if number of vulnerabilities found is >= this number. Set -1 to pass regardless of vulnerabilities.
     def fail_cve_score = 8 // Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
@@ -15,7 +15,7 @@ node {
     }
     
     stage('Run Deepfence Vulnerability Mapper') {
-        sh "package-scanner -deepfence-key=42c05cb2-c03e-4a49-9e3a-2347a278261d -vulnerability-scan=true -output=json -mode=local -mgmt-console-url=157.245.15.65 -source=python:latest -fail-on-count=5000 -fail-on-score=-1 -mask-cve-ids=''"
+        sh "package-scanner -deepfence-key=42c05cb2-c03e-4a49-9e3a-2347a278261d -vulnerability-scan=true -output=json -mode=local -mgmt-console-url=157.245.15.65 -source=${full_image_name} -fail-on-count=5000 -fail-on-score=-1 -mask-cve-ids=''"
     }
     
     
